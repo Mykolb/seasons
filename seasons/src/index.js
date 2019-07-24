@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import SeasonDisplay from './SeasonDisplay'
+import Spinner from './Spinner';
 
 //React.Components allows us to pull in pull functionality from  React.Component into out class; subclassing, borrowing functionality into our class 
 //constructor fn is specific to JS not React, can just call state
@@ -38,6 +39,18 @@ class App extends React.Component {
              );
             }
         
+//created helper function so component is more resuseable and you don't have multiple return statements in render method 
+    renderContent() {
+        if ( this.state.errMsg && !this.state.latitude) {
+            return <div>Error: {this.state.errMsg}</div>
+        }
+        if (!this.state.errMsg && this.state.latitude ) {
+            return <SeasonDisplay latitude={this.state.latitude} />
+            //taking state and passing it down as prop
+        }
+        // if (!this.state.errMsg && !this.state.latitude) { <---- means this 
+            return <Spinner message='Please accept location request' />
+    }
 
  
 // //render is called before CDU
@@ -46,21 +59,17 @@ class App extends React.Component {
 //      }
 
     render() {
-            if ( this.state.errMsg && !this.state.latitude) {
-                return <div>Error: {this.state.errMsg}</div>
-            }
-            if (!this.state.errMsg && this.state.latitude ) {
-                return <SeasonDisplay latitude={this.state.latitude} />
-                //taking state and passing it down as prop
-            }
-            // if (!this.state.errMsg && !this.state.latitude) { <---- means this 
-                return <div>Loading...</div>
-            }
+        return(
+            <div className='border'>
+                {this.renderContent()}
+            </div>
+            )
+            
         }
     
-
+    }
   
-    // )
+   
 
 
 
